@@ -141,33 +141,24 @@ const QString& RegistryManager::read(const QString& key)
             if (keyList.length() == 0)
             {
                 //////////////////////////// TEST 5///////////////////////////////
-                if (pathParts[pathParts.size()-1]==pathParts[pathParts.size()-2])
+                QString slicePart=pathParts[0];
+                for (int i = 1; i < pathParts.size()-1; ++i)
                 {
-                    QString slicePart=pathParts[0];
-                    for (int i = 1; i < pathParts.size()-2; ++i)
-                    {
-                        slicePart=  slicePart + "\\" + pathParts[i] ;
-                    }
-                    QSettings settings1(slicePart, QSettings::NativeFormat);
-                    QStringList keyList1 = settings1.allKeys();
-                    for(int i = 0; i < keyList1.size(); i++)
-                    {
-                        registryBranch.insert(keyList1[i], settings.value(keyList1[i]).toString());
-                    }
-                    qDebug() << "KEY: " << key << "  " << "VALUE " << settings1.value(pathParts[pathParts.size()-1],QSettings::NativeFormat).toString()<< endl;
-                    return returnString=  QString ( key + "  " + settings1.value(pathParts[pathParts.size()-1],QSettings::NativeFormat).toString() );
+                    slicePart=  slicePart + "\\" + pathParts[i] ;
                 }
-                //////////////////////////// TEST 5///////////////////////////////
-                else
+                QSettings settings1(slicePart, QSettings::NativeFormat);
+                QStringList keyList1 = settings1.allKeys();
+                for(int i = 0; i < keyList1.size(); i++)
                 {
-                     qDebug() <<"Test4"<<endl;
-                     qDebug() << "KEY: " << key << "  " << "VALUE " << settings.value(key,QSettings::NativeFormat).toString()<< endl;
-                    return returnString=  QString ( key + "  " + settings.value(key,QSettings::NativeFormat).toString() );
+                    registryBranch.insert(keyList1[i], settings.value(keyList1[i]).toString());
                 }
+                qDebug() << "KEY: " << key << "  " << "VALUE " << settings1.value(pathParts[pathParts.size()-1],QSettings::NativeFormat).toString()<< endl;
+                return returnString=  QString (settings1.value(pathParts[pathParts.size()-1],QSettings::NativeFormat).toString() );
+
             }
             //////////////////////////// TEST 4///////////////////////////////
             //qDebug() << "KEY: " << keyList[0] << "  " << "VALUE " << registryBranch.find(keyList[0]).value()<< endl;
-            return returnString =  QString ( keyList[0] + "  " + registryBranch.find(keyList[0]).value() );
+            return returnString =  QString ( registryBranch.find(keyList[0]).value() );
             //////////////////////////// TEST 4///////////////////////////////
         }
         else
