@@ -24,14 +24,11 @@ private:
 
     QVector<QString> hiveKeys;
     QStringList errorsList;
-    QString returnString="";
     QStringList pathParts;
-
 
 public:
     static RegistryManager& instance();
     bool write(const QString& key, const QString& value);
-    const QString& read(const QString& key);
+    const QString read(const QString& key);
     void printErrorslist();
 };
-
