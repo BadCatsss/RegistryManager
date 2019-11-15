@@ -37,7 +37,7 @@ bool RegistryManager::checkKeyCorrectnes(const QString& path)
 
             if ( st.childGroups().contains( pathParts[var] ) || st.allKeys().contains( pathParts[var] ) )
             {
-                if ( ! ( st.childGroups().contains( pathParts[var] ) && st.allKeys().contains( pathParts[var] ) ) && ! (var == pathParts.length() - 1)  )
+                if ( ! ( st.childGroups().contains( pathParts[var] ) && st.allKeys().contains( pathParts[var] ) && var == pathParts.length() - 1 )   )
                 {
                     //если st.childGroups().contains(list[var]) && st.allKeys().contains(list[var])
                     //например: HKEY_CURRENT_USER\Control Panel\Cursors\Cursors\Cursors
@@ -48,18 +48,11 @@ bool RegistryManager::checkKeyCorrectnes(const QString& path)
 
                 else if(st.childGroups().contains( pathParts[var] ) || var == pathParts.length() -1 )
                 {
-                    if( st.allKeys().contains( pathParts[var] ) )
+                    if( st.allKeys().contains( pathParts[var] )  ||  st.allKeys().size() != 0)
                     {
                         return true;
                     }
-                    else if( st.allKeys().size() != 0 )
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
                 }
 
                 else
@@ -68,14 +61,14 @@ bool RegistryManager::checkKeyCorrectnes(const QString& path)
                     return false;
                 }
             }
+            else return false;
         }
         return true;
     }
-    else
-    {
+
         addErrorToList("Too short path");
         return false;
-    }
+
 }
 const QStringList& RegistryManager::getErrorsList()
 {

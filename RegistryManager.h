@@ -1,6 +1,6 @@
 #pragma once
 #include <qstring.h>
-
+#include <thread>
 #include <QMutex>
 #include <QSystemSemaphore>
 #include <QSharedMemory>
