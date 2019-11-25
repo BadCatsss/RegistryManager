@@ -35,10 +35,11 @@ bool RegistryManager::checkKeyCorrectnes(const QString& path)
         {
             QSettings st(pathh, QSettings::NativeFormat);
 
-            if ( st.childGroups().contains( pathParts[var] ) || st.allKeys().contains( pathParts[var] ) )
+            if ( st.childGroups().contains( pathParts[var] ) || st.childKeys().contains( pathParts[var] ) )
             {
-                if ( ! ( st.childGroups().contains( pathParts[var] ) && st.allKeys().contains( pathParts[var] ) && var == pathParts.length() - 1 )   )
+                if ( ! ( st.childGroups().contains( pathParts[var] ) && st.childKeys().contains( pathParts[var] ) && var == pathParts.length() - 1 )   )
                 {
+                    //                     qDebug()<<"groups"<<endl<<st.childGroups()<<endl;
                     //если st.childGroups().contains(list[var]) && st.allKeys().contains(list[var])
                     //например: HKEY_CURRENT_USER\Control Panel\Cursors\Cursors\Cursors
                     // - иначе, если так, отдаем предпочтение каталогу и подкаталогу - не добавляя  "\\" - и не переходя к одноименной записи
@@ -66,8 +67,8 @@ bool RegistryManager::checkKeyCorrectnes(const QString& path)
         return true;
     }
 
-        addErrorToList("Too short path");
-        return false;
+    addErrorToList("Too short path");
+    return false;
 
 }
 const QStringList& RegistryManager::getErrorsList()

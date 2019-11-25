@@ -28,7 +28,8 @@ int main(int argc, char *argv[])
     QTime t;
     t.start();
     //examples
-    auto path = RegistryManager::instance().read("HKEY_CURRENT_USER\\Environment\\Path"); // Test1 //Test 4 - ok
+    auto path =RegistryManager::instance().read("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment\\OS");
+//auto path = RegistryManager::instance().read("HKEY_CURRENT_USER\\Environment\\Path"); // Test1 //Test 4 - ok
     qDebug("Time elapsed: %d sec; %d in ms", t.elapsed()/1000,t.elapsed());
     //RegistryManager::instance().read("HKEY_CURRENT_USER\\Control Panel\\Cursors\\Cursors"); // Test2 - ok
     //RegistryManager::instance().write("HKEY_CURRENT_USER\\Control Panel\\Cursors\\Cursors","2333"); // Test3 - ok //Обратно чтению - двойной путь - подкталог, одинарный - файл
