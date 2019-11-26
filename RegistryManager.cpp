@@ -29,17 +29,15 @@ bool RegistryManager::checkKeyCorrectnes(const QString& path)
 {
     pathParts = path.split( QRegExp( "[/\\\\]" ) );
     QString pathh = pathParts[0];
-    if (pathParts.size() >= 2)
+    if (pathParts.size() >= 3)
     {
         for (int var = 1; var < pathParts.size(); ++var)
         {
             QSettings st(pathh, QSettings::NativeFormat);
-
             if ( st.childGroups().contains( pathParts[var] ) || st.childKeys().contains( pathParts[var] ) )
             {
                 if ( ! ( st.childGroups().contains( pathParts[var] ) && st.childKeys().contains( pathParts[var] ) && var == pathParts.length() - 1 )   )
                 {
-                    //                     qDebug()<<"groups"<<endl<<st.childGroups()<<endl;
                     //если st.childGroups().contains(list[var]) && st.allKeys().contains(list[var])
                     //например: HKEY_CURRENT_USER\Control Panel\Cursors\Cursors\Cursors
                     // - иначе, если так, отдаем предпочтение каталогу и подкаталогу - не добавляя  "\\" - и не переходя к одноименной записи
@@ -55,7 +53,6 @@ bool RegistryManager::checkKeyCorrectnes(const QString& path)
                     }
                     return false;
                 }
-
                 else
                 {
                     addErrorToList("Key or subkey is wrong. Cant write value");
@@ -66,10 +63,8 @@ bool RegistryManager::checkKeyCorrectnes(const QString& path)
         }
         return true;
     }
-
     addErrorToList("Too short path");
     return false;
-
 }
 const QStringList& RegistryManager::getErrorsList()
 {
@@ -90,14 +85,19 @@ void RegistryManager::printErrorslist()
     }
 }
 bool RegistryManager::write(const QString& key, const QString& value)
-{
-    QSettings settings(key,QSettings::NativeFormat);
+{ 
+    QSettings settings(QString::fromStdString(key.toStdString().erase( key.toStdString().find_last_of("\\"),key.length()) ),QSettings::NativeFormat);
     if ( checkHiveKeyCorrectnes(key) )
     {
-        read(key);
-        if ( checkKeyCorrectnes(key) )
+        if ( checkKeyCorrectnes(key) || !settings.contains(value))
         {
-            settings.setValue(QString::fromStdString(key.toStdString().erase(0, key.toStdString().find_last_of("\\") + 1) ), value);
+            QString slicePart = pathParts[0];
+            for (int i = 1; i < pathParts.size() - 1; ++i)
+            {
+                slicePart=  slicePart + "\\" + pathParts[i] ;
+            }
+            QSettings settings1(slicePart,QSettings::NativeFormat);
+            settings1.setValue(QString::fromStdString(key.toStdString().erase(0, key.toStdString().find_last_of("\\") + 1) ),value);
         }
         else
         {
@@ -121,19 +121,16 @@ const QString RegistryManager::read(const QString& key)
         {
             QMap<QString, QString> registryBranch;
             QStringList keyList = settings.allKeys();
-            for(int i = 0; i < keyList.size(); i++)
+            for ( int i = 0; i < keyList.size(); i++ )
             {
                 registryBranch.insert(keyList[i], settings.value(keyList[i]).toString());
             }
-
             for (int var = 0; var < registryBranch.size(); ++var)
             {
                 qDebug() << "KEY: " << keyList[var] << "  " << "VALUE " << registryBranch.find( keyList[var] ).value() << endl;
             }
-
             if (keyList.length() == 0)
             {
-                //////////////////////////// TEST 5///////////////////////////////
                 QString slicePart = pathParts[0];
                 for (int i = 1; i < pathParts.size() - 1; ++i)
                 {
@@ -147,12 +144,9 @@ const QString RegistryManager::read(const QString& key)
                 }
                 qDebug() << "KEY: " << key << "  " << "VALUE " << settings1.value(pathParts[ pathParts.size() - 1 ], QSettings::NativeFormat).toString()<< endl;
                 return QString ( settings1.value(pathParts[ pathParts.size() - 1 ], QSettings::NativeFormat).toString() );
-
             }
-            //////////////////////////// TEST 4///////////////////////////////
             //qDebug() << "KEY: " << keyList[0] << "  " << "VALUE " << registryBranch.find(keyList[0]).value()<< endl;
             return QString ( registryBranch.find( keyList[0] ).value() );
-            //////////////////////////// TEST 4///////////////////////////////
         }
         else
         {

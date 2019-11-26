@@ -25,19 +25,31 @@ int main(int argc, char *argv[])
         QTextStream(stdout) << "application is already run";
         a.exit(-1);
     }
-    QTime t;
-    t.start();
+
     //examples
-    auto path =RegistryManager::instance().read("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment\\OS");
-//auto path = RegistryManager::instance().read("HKEY_CURRENT_USER\\Environment\\Path"); // Test1 //Test 4 - ok
-    qDebug("Time elapsed: %d sec; %d in ms", t.elapsed()/1000,t.elapsed());
-    //RegistryManager::instance().read("HKEY_CURRENT_USER\\Control Panel\\Cursors\\Cursors"); // Test2 - ok
-    //RegistryManager::instance().write("HKEY_CURRENT_USER\\Control Panel\\Cursors\\Cursors","2333"); // Test3 - ok //Обратно чтению - двойной путь - подкталог, одинарный - файл
-    // RegistryManager::instance().read("HKEY_CURRENT_USER\\Control Panel\\Colors\\ButtonFace");//Test4 - ok
-    //QString path;
+    QString path;
     //QTextStream stream(stdin);
     //path = stream.readLine();
     //RegistryManager::instance().read(path);
-    //RegistryManager::instance().printErrorslist();
-    //return a.exec();
+
+    //TIME TESTS
+    //QTime t;
+    //t.start();
+
+    //READ
+
+    //path =RegistryManager::instance().read("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control");
+    //path = RegistryManager::instance().read("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment\\OS");
+    //path = RegistryManager::instance().read("HKEY_CURRENT_USER\\Environment\\Path"); //!!!!!!!!!!!!!!!!!!!!
+    //path = RegistryManager::instance().read("HKEY_CURRENT_USER\\Control Panel\\Colors\\ButtonFace");
+    //path = RegistryManager::instance().read("HKEY_CURRENT_USER\\Control Panel\\Cursors\\Cursors");
+
+    //WRITE
+    //RegistryManager::instance().write("HKEY_CURRENT_USER\\Control Panel\\Cursors\\Cursors","24444");
+    //RegistryManager::instance().write("HKEY_CURRENT_USER\\Environment\\Path","111111111");
+    //RegistryManager::instance().write("HKEY_CURRENT_USER\\Environment\\TEST1", "22222222");
+
+    //qDebug("Time elapsed: %d sec; %d in ms", t.elapsed()/1000,t.elapsed());
+    RegistryManager::instance().printErrorslist();
+    return a.exec();
 }
