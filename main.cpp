@@ -28,9 +28,10 @@ int main(int argc, char *argv[])
 
     //examples
     QString path;
-    //QTextStream stream(stdin);
-    //path = stream.readLine();
-    //RegistryManager::instance().read(path);
+
+    //    QTextStream stream(stdin);
+    //    path = stream.readLine();
+    //    RegistryManager::instance().read(path);
 
     //TIME TESTS
     //QTime t;
@@ -45,7 +46,7 @@ int main(int argc, char *argv[])
     //path = RegistryManager::instance().read("HKEY_CURRENT_USER\\Control Panel\\Cursors\\Cursors");
 
     //WRITE
-    //RegistryManager::instance().write("HKEY_CURRENT_USER\\Control Panel\\Cursors\\Cursors","24444");
+    //RegistryManager::instance().write("HKEY_CURRENT_USER\\Control Panel\\Cursors\\Cursors","11111");
     //RegistryManager::instance().write("HKEY_CURRENT_USER\\Environment\\Path","111111111");
     //RegistryManager::instance().write("HKEY_CURRENT_USER\\Environment\\TEST1", "22222222");
 

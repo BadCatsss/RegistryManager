@@ -29,7 +29,7 @@ bool RegistryManager::checkKeyCorrectnes(const QString& path)
 {
     pathParts = path.split( QRegExp( "[/\\\\]" ) );
     QString pathh = pathParts[0];
-    if (pathParts.size() >= 3)
+    if (pathParts.size() >= 2)
     {
         for (int var = 1; var < pathParts.size(); ++var)
         {
@@ -38,7 +38,7 @@ bool RegistryManager::checkKeyCorrectnes(const QString& path)
             {
                 if ( ! ( st.childGroups().contains( pathParts[var] ) && st.childKeys().contains( pathParts[var] ) && var == pathParts.length() - 1 )   )
                 {
-                    //если st.childGroups().contains(list[var]) && st.allKeys().contains(list[var])
+                    //если st.childGroups().contains(list[var]) && st.childKeys().contains(list[var])
                     //например: HKEY_CURRENT_USER\Control Panel\Cursors\Cursors\Cursors
                     // - иначе, если так, отдаем предпочтение каталогу и подкаталогу - не добавляя  "\\" - и не переходя к одноименной записи
                     //var == list.length() - 1 - указан файл - т.е далее, нет подразделов в пути
@@ -120,7 +120,9 @@ const QString RegistryManager::read(const QString& key)
         if ( checkKeyCorrectnes( key ) )
         {
             QMap<QString, QString> registryBranch;
+
             QStringList keyList = settings.allKeys();
+
             for ( int i = 0; i < keyList.size(); i++ )
             {
                 registryBranch.insert(keyList[i], settings.value(keyList[i]).toString());

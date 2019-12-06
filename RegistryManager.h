@@ -8,7 +8,6 @@
 #include<QDir>
 #include <QtDebug>
 
-class RegistryManagerDestroyer;
 class RegistryManager
 {
 private:
